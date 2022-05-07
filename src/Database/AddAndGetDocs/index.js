@@ -5,14 +5,35 @@ import {
   collection,
   addDoc,
   getDocs,
+  getDoc,
   doc,
   updateDoc,
   deleteDoc,
 } from "firebase/firestore";
+import { Card } from "../../Card";
 
 const Doc = () => {
   const [input, setInput] = useState("");
+  const [userId, setUserId] = useState([]);
   const collectionRef = collection(database, "users");
+
+  console.log(userId);
+  // const ids = userId?.map((ele) => {
+  //   return ele?.id;
+  // });
+
+  // console.log(ids);
+
+  useEffect(() => {
+    getDocs(collectionRef).then((res) => {
+      setUserId(
+        res.docs.map((doc) => {
+          return { ...doc.data(), id: doc.id };
+        })
+      );
+    });
+  }, []);
+
   const handleInput = (event) => {
     let newInput = { [event.target.name]: event.target.value };
 
@@ -34,64 +55,91 @@ const Doc = () => {
   };
 
   const getData = () => {
+    getDoc(doc(database, "users", "F6GLWI817NfmVBRDQpxh"))
+      .then((res) => {
+        console.log("data is", res.data());
+      })
+      .catch((err) => {
+        console.log(err.message);
+      });
+  };
+
+  const getDatas = () => {
     //GET DATA FROM THE DATABASE
-    getDocs(collectionRef).then((res) => {
-      console.log(
-        res.docs.map((doc) => {
-          return { ...doc.data(), id: doc.id };
-        })
-      );
-    });
+    // getDocs(collectionRef).then((res) => {
+    //   setUserId(
+    //     res.docs.map((doc) => {
+    //       return { ...doc.data(), id: doc.id };
+    //     })
+    //   );
+    // });
   };
 
   //UPDATE DATA IN THE DATABASE
-  const updataData =()=>{
-    const docTOUpdate = doc(database, 'users', "n58gtk1rzKLVm0rHKhOC")
-    updateDoc(docTOUpdate,{
-      email:"heyy@gmail.com"
-    }).then((res)=>{
-      alert("data updated")
-    }).catch((err)=>{
-      alert("data failed to update")
+  const updataData = () => {
+    const docTOUpdate = doc(database, "users", "n58gtk1rzKLVm0rHKhOC");
+    updateDoc(docTOUpdate, {
+      email: "heyy@gmail.com",
     })
-  }
+      .then((res) => {
+        alert("data updated");
+      })
+      .catch((err) => {
+        alert("data failed to update");
+      });
+  };
 
   //DELETE DATA FROM THE DATABASE
-  const deleteData =()=>{
-    const docTODelete = doc(database, "users", "4eVEE9tBsTHJDMV2NFkt")
-    deleteDoc(docTODelete).then((res)=>{
-      alert("doc deleted ")
-    }).catch((err)=>{
-      alert(err.message)
-    })
-  }
+  const deleteData = () => {
+    const docTODelete = doc(database, "users", "4eVEE9tBsTHJDMV2NFkt");
+    deleteDoc(docTODelete)
+      .then((res) => {
+        alert("doc deleted ");
+      })
+      .catch((err) => {
+        alert(err.message);
+      });
+  };
 
+  // console.log("sdofnkl")
   return (
-    <div>
-      <input
-        placeholder="Enter your email"
-        name="email"
-        onChange={(event) => handleInput(event)}
-      />
-      <input
-        placeholder="ENter your password "
-        name="password"
-        onChange={(event) => handleInput(event)}
-      />
+    <>
+      <div>
+        <input
+          placeholder="Enter your email"
+          name="email"
+          onChange={(event) => handleInput(event)}
+        />
+        <input
+          placeholder="ENter your password "
+          name="password"
+          onChange={(event) => handleInput(event)}
+        />
 
-      <button type="submit" onClick={addData}>
-        Add Data
-      </button>
-      <button type="submit" onClick={getData}>
-        Get Data
-      </button>
-      <button type="submit" onClick={updataData}>
-        Update Data
-      </button>
-      <button type="submit" onClick={deleteData}>
-        Delete Data
-      </button>
-    </div>
+        <button type="submit" onClick={addData} className="border-2">
+          Add Data
+        </button>
+        <button type="submit" onClick={getData} className="border-2">
+          Get Data
+        </button>
+        <button type="submit" onClick={getDatas} className="border-2">
+          Get Datas
+        </button>
+        <button type="submit" onClick={updataData} className="border-2">
+          Update Data
+        </button>
+        <button type="submit" onClick={deleteData} className="border-2">
+          Delete Data
+        </button>
+      </div>
+
+      <div>
+        {userId &&
+          userId.map((ele, index) => (
+            <Card id={ele.id} userId={ele} key={index} />
+          ))}
+      </div>
+    </>
   );
 };
 

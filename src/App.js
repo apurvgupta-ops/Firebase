@@ -3,11 +3,11 @@ import CreateUser from "./Firebase/createUserWithEmailAndPassword";
 import SignInUser from "./Firebase/signInUserWithEmaiAndPassword";
 import GoogleSignIn from './Firebase/GoogleProvider'
 import Doc from './Database/AddAndGetDocs'
-import './App.css'
+import { Card } from "./Card";
 
 export const App = () => {
   return (
-    <div className="App">
+    <div>
       {/* <CreateUser />
       <SignInUser />
       <GoogleSignIn/> */}
