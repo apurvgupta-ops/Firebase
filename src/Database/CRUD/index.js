@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { app } from "../../firebaseconfig";
 import { database } from "../../firebaseconfig";
+
 import {
   collection,
   addDoc,
@@ -11,29 +12,12 @@ import {
   deleteDoc,
 } from "firebase/firestore";
 import { Card } from "../../Card";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 const Doc = () => {
   const [input, setInput] = useState("");
-  const [userId, setUserId] = useState([]);
   const collectionRef = collection(database, "users");
-
-  console.log(userId);
-  // const ids = userId?.map((ele) => {
-  //   return ele?.id;
-  // });
-
-  // console.log(ids);
-
-  useEffect(() => {
-    getDocs(collectionRef).then((res) => {
-      setUserId(
-        res.docs.map((doc) => {
-          return { ...doc.data(), id: doc.id };
-        })
-      );
-    });
-  }, []);
-
+  const navigate = useNavigate();
   const handleInput = (event) => {
     let newInput = { [event.target.name]: event.target.value };
 
@@ -132,12 +116,8 @@ const Doc = () => {
           Delete Data
         </button>
       </div>
-
       <div>
-        {userId &&
-          userId.map((ele, index) => (
-            <Card id={ele.id} userId={ele} key={index} />
-          ))}
+        <button onClick={() => navigate("card")}>Card </button>
       </div>
     </>
   );
