@@ -1,7 +1,7 @@
 import React from "react";
-import CreateUser from "./Firebase/createUserWithEmailAndPassword";
+import CreateUser from "./Firebase/Authentication/createUserWithEmailAndPassword";
 import SignInUser from "./Firebase/signInUserWithEmaiAndPassword";
-import GoogleSignIn from './Firebase/GoogleProvider'
+import GoogleSignIn from './Firebase/Authentication/GoogleProvider'
 import Doc from './Database/CRUD'
 import { Card } from "./Card";
 import Storage from "./Database/Storage";

@@ -10,7 +10,7 @@ export const MainRoutes = () => {
       <Routes>
         <Route path="/" element={<Doc />} />
         <Route path="card" element={<Card />} />
-        <Route path="card/:cardId" element={<Card />} />
+        {/* <Route path="card/:cardId" element={<Card />} /> */}
       </Routes>
     </div>
   );
